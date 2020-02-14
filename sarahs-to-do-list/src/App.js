@@ -1,6 +1,7 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import React from 'react';
+import logo from './logo.svg';
+import './App.css';
+import AddListItem from './addListItem';
 
 function List(props) {
   return (
@@ -8,7 +9,7 @@ function List(props) {
       {props.toDo.map(listItem => {
         return (
           <li key={listItem.name} className={listItem.done}>
-            {listItem.name}, Due date: {listItem.dueDate}{" "}
+            {listItem.name}, Due date: {listItem.dueDate}{' '}
             <input
               type="checkbox"
               onClick={event => props.completeTask(listItem.name)}
@@ -26,16 +27,16 @@ class App extends React.Component {
   state = {
     toDo: [
       {
-        name: "Improve world sustainability",
-        dueDate: "01-01-2030",
-        done: "incomplete"
+        name: 'Improve world sustainability',
+        dueDate: '01-01-2030',
+        done: 'incomplete'
       },
       {
-        name: "finish Northcoders course",
-        dueDate: "03-20-2020",
-        done: "incomplete"
+        name: 'finish Northcoders course',
+        dueDate: '03-20-2020',
+        done: 'incomplete'
       },
-      { name: "Sleep", dueDate: "02-13-2020", done: "incomplete" }
+      { name: 'Sleep', dueDate: '02-13-2020', done: 'incomplete' }
     ]
   };
 
@@ -54,6 +55,7 @@ class App extends React.Component {
           <option value="done">Still to do</option>
         </select>
         <List toDo={this.state.toDo} completeTask={this.completeTask} />
+        <AddListItem addNewItem={this.addNewItem} />
       </main>
     );
   }
@@ -63,9 +65,9 @@ class App extends React.Component {
       return {
         toDo: currentState.toDo.map(listItem => {
           if (listItem.name === completedTaskName) {
-            listItem.done !== "complete"
-              ? (listItem.done = "complete")
-              : (listItem.done = "incomplete");
+            listItem.done !== 'complete'
+              ? (listItem.done = 'complete')
+              : (listItem.done = 'incomplete');
           }
           return listItem;
         })
@@ -74,7 +76,7 @@ class App extends React.Component {
   };
 
   orderBy = value => {
-    if (value === "dueDate") {
+    if (value === 'dueDate') {
       this.setState({
         toDo: this.state.toDo.sort((currentItem, nextItem) => {
           const currentDate = new Date(currentItem.dueDate).getTime();
@@ -82,7 +84,7 @@ class App extends React.Component {
           return currentDate - nextDate;
         })
       });
-    } else if (value === "done") {
+    } else if (value === 'done') {
       this.setState({
         toDo: this.state.toDo.sort((currentItem, nextItem) => {
           return currentItem.done < nextItem.done
@@ -93,6 +95,17 @@ class App extends React.Component {
         })
       });
     }
+  };
+
+  addNewItem = (inputItem, inputDate) => {
+    this.setState(currentState => {
+      return {
+        toDo: [
+          ...currentState.toDo,
+          { name: inputItem, dueDate: inputDate, done: 'incomplete' }
+        ]
+      };
+    });
   };
 }
 
